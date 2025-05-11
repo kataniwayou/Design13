@@ -1,0 +1,21 @@
+@startuml SimpleTest
+title Simple Test Diagram
+
+class AbstractServiceBase {
+  # ServiceState _state
+  + {abstract} string ServiceId
+  + {abstract} string Version
+}
+
+class AbstractImporterService {
+  + {abstract} string Protocol
+}
+
+class AbstractProcessorService {
+  + {abstract} ProcessingResult Process()
+}
+
+AbstractServiceBase <|-- AbstractImporterService
+AbstractServiceBase <|-- AbstractProcessorService
+
+@enduml

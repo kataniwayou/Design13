@@ -1,0 +1,331 @@
+@startuml FlowOrchestrator Abstract Classes
+' Style settings
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classBackgroundColor LightBlue
+skinparam classBorderColor DarkBlue
+skinparam packageBackgroundColor LightGray
+skinparam packageBorderColor Gray
+skinparam interfaceBackgroundColor LightGreen
+skinparam interfaceBorderColor DarkGreen
+
+' Title
+title FlowOrchestrator Abstract Classes with MassTransit Integration
+
+package "Core" {
+  abstract class AbstractServiceBase {
+    # ServiceState _state
+    # IPublishEndpoint _publishEndpoint
+    # ILogger _logger
+    # Meter _meter
+    # Tracer _tracer
+    + {abstract} string ServiceId
+    + {abstract} string Version
+    + {abstract} string ServiceType
+    + {abstract} void Initialize(ConfigurationParameters)
+    + {abstract} void Terminate()
+    + ServiceState GetState()
+    # void SetState(ServiceState)
+    + {abstract} VersionInfo GetVersionInfo()
+    + {abstract} CompatibilityMatrix GetCompatibilityMatrix()
+    # {abstract} void RecordMetric(string, double, Dictionary<string, string>)
+    # {abstract} void StartOperation(string)
+    # {abstract} void EndOperation(string, OperationResult)
+    # {abstract} Task PublishMessage<T>(T message) where T : class
+    + {abstract} ValidationResult ValidateConfiguration(ConfigurationParameters)
+  }
+  
+  abstract class AbstractEntity {
+    + string Version
+    + DateTime CreatedTimestamp
+    + DateTime LastModifiedTimestamp
+    + string VersionDescription
+    + string PreviousVersionId
+    + VersionStatus VersionStatus
+    + {abstract} string GetEntityId()
+    + {abstract} string GetEntityType()
+    + {abstract} ValidationResult Validate()
+    # bool _isModified
+    + bool IsModified()
+    + void SetModified()
+    + void ClearModified()
+  }
+}
+
+package "Integration" {
+  abstract class AbstractImporterService {
+    + {abstract} string Protocol
+    + {abstract} ProtocolCapabilities GetCapabilities()
+    + {abstract} ImportResult Import(ImportParameters, ExecutionContext)
+    + {abstract} Task Consume(ConsumeContext<ImportCommand>)
+    # {abstract} Task PublishImportResult(ImportResult, string)
+    # {abstract} Task PublishImportError(Exception, string)
+    # {abstract} string ClassifyException(Exception)
+    # {abstract} Dictionary<string, object> GetErrorDetails(Exception)
+    # {abstract} void TryRecover()
+    # {abstract} void OnInitialize()
+    # {abstract} void OnReady()
+    # {abstract} void OnProcessing()
+    # {abstract} void OnError(Exception)
+    # {abstract} void OnTerminate()
+  }
+  
+  abstract class AbstractExporterService {
+    + {abstract} string Protocol
+    + {abstract} ProtocolCapabilities GetCapabilities()
+    + {abstract} MergeCapabilities GetMergeCapabilities()
+    + {abstract} ExportResult Export(ExportParameters, ExecutionContext)
+    + {abstract} Task Consume(ConsumeContext<ExportCommand>)
+    + {abstract} ExportResult MergeBranches(Dictionary<string, DataPackage>, MergeStrategy, ExecutionContext)
+    # {abstract} Task PublishExportResult(ExportResult, string)
+    # {abstract} Task PublishExportError(Exception, string)
+    # {abstract} string ClassifyException(Exception)
+    # {abstract} Dictionary<string, object> GetErrorDetails(Exception)
+    # {abstract} void TryRecover()
+    # {abstract} void OnInitialize()
+    # {abstract} void OnReady()
+    # {abstract} void OnProcessing()
+    # {abstract} void OnError(Exception)
+    # {abstract} void OnTerminate()
+  }
+  
+  abstract class AbstractProtocol {
+    + {abstract} string Name
+    + {abstract} string Description
+    + {abstract} ProtocolCapabilities GetCapabilities()
+    + {abstract} ConnectionParameters GetConnectionParameters()
+    + {abstract} ValidationResult ValidateConnectionParameters(Dictionary<string, string>)
+    + {abstract} ProtocolHandler CreateHandler(Dictionary<string, string>)
+  }
+  
+  abstract class AbstractProtocolHandler {
+    # Dictionary<string, string> _parameters
+    + {abstract} Connection Connect()
+    + {abstract} void Disconnect(Connection)
+    + {abstract} DataPackage Retrieve(Connection, RetrieveParameters)
+    + {abstract} void Deliver(Connection, DeliverParameters)
+    # {abstract} string ClassifyException(Exception)
+    # {abstract} Dictionary<string, object> GetErrorDetails(Exception)
+  }
+}
+
+package "Processing" {
+  abstract class AbstractProcessorService {
+    + {abstract} ProcessingResult Process(ProcessParameters, ExecutionContext)
+    + {abstract} SchemaDefinition GetInputSchema()
+    + {abstract} SchemaDefinition GetOutputSchema()
+    + {abstract} Task Consume(ConsumeContext<ProcessCommand>)
+    # {abstract} Task PublishProcessResult(ProcessingResult, string)
+    # {abstract} Task PublishProcessError(Exception, string)
+    # {abstract} string ClassifyException(Exception)
+    # {abstract} Dictionary<string, object> GetErrorDetails(Exception)
+    # {abstract} void TryRecover()
+    # {abstract} void OnInitialize()
+    # {abstract} void OnReady()
+    # {abstract} void OnProcessing()
+    # {abstract} void OnError(Exception)
+    # {abstract} void OnTerminate()
+  }
+}
+
+package "Management" {
+  abstract class AbstractManagerService<TService, TServiceId> {
+    # Dictionary<string, Dictionary<string, TService>> _registry
+    + {abstract} RegistrationResult Register(TService)
+    + {abstract} ValidationResult Validate(TService)
+    + {abstract} TService GetService(TServiceId, string)
+    + {abstract} IEnumerable<TService> GetAllServices(TServiceId)
+    + {abstract} IEnumerable<TService> GetAllServices()
+    + {abstract} bool UnregisterService(TServiceId, string)
+    + {abstract} ServiceStatus GetServiceStatus(TServiceId, string)
+    + {abstract} void UpdateServiceStatus(TServiceId, string, ServiceStatus)
+    + {abstract} Task Consume(ConsumeContext<ServiceRegistrationCommand<TService>>)
+    # {abstract} Task PublishServiceRegistered(TServiceId, string)
+    # {abstract} Task PublishServiceUnregistered(TServiceId, string)
+    # {abstract} Task PublishServiceStatusChanged(TServiceId, string, ServiceStatus, ServiceStatus)
+  }
+  
+  abstract class AbstractTaskSchedulerService {
+    + {abstract} void ScheduleFlow(ScheduleParameters)
+    + {abstract} void CancelSchedule(string)
+    + {abstract} ScheduleStatus GetScheduleStatus(string)
+    + {abstract} Task Consume(ConsumeContext<ScheduleCommand>)
+    + {abstract} Task Consume(ConsumeContext<ScheduleModificationCommand>)
+    # {abstract} Task PublishFlowExecutionCommand(string, Dictionary<string, object>)
+    # {abstract} Task PublishScheduleStatusChanged(string, ScheduleStatus, ScheduleStatus)
+  }
+}
+
+package "Execution" {
+  abstract class AbstractOrchestratorService {
+    + {abstract} ExecutionResult ExecuteFlow(FlowExecutionParameters)
+    + {abstract} void CreateBranch(string, string)
+    + {abstract} void CompleteBranch(string, string)
+    + {abstract} Task Consume(ConsumeContext<FlowExecutionCommand>)
+    + {abstract} Task Consume(ConsumeContext<FlowControlCommand>)
+    # {abstract} Task PublishFlowExecutionStarted(string, FlowExecutionParameters)
+    # {abstract} Task PublishFlowExecutionCompleted(string, ExecutionResult)
+    # {abstract} Task PublishFlowExecutionFailed(string, Exception)
+    # {abstract} Task PublishBranchCreated(string, string)
+    # {abstract} Task PublishBranchCompleted(string, string)
+    # {abstract} Task PublishBranchFailed(string, string, Exception)
+  }
+  
+  abstract class AbstractMemoryManagerService {
+    + {abstract} void StoreData(string, object)
+    + {abstract} T RetrieveData<T>(string)
+    + {abstract} void ClearData(string)
+    + {abstract} Task Consume(ConsumeContext<MemoryOperationCommand>)
+    # {abstract} Task PublishMemoryOperationResult(string, bool, string)
+    # {abstract} Task PublishMemoryCleanupEvent(string)
+  }
+  
+  abstract class AbstractBranchControllerService {
+    + {abstract} void InitializeBranch(string, string)
+    + {abstract} void ExecuteBranch(string, string)
+    + {abstract} BranchStatus GetBranchStatus(string, string)
+    + {abstract} Task Consume(ConsumeContext<BranchControlCommand>)
+    # {abstract} Task PublishBranchStatusChanged(string, string, BranchStatus, BranchStatus)
+    # {abstract} Task PublishBranchExecutionResult(string, string, BranchExecutionResult)
+  }
+}
+
+package "Observability" {
+  abstract class AbstractStatisticsService {
+    + {abstract} void RecordExecutionStatistics(ExecutionStatistics)
+    + {abstract} ExecutionStatistics GetExecutionStatistics(string)
+    + {abstract} SystemStatistics GetSystemStatistics()
+    + {abstract} Task Consume(ConsumeContext<TelemetryEvent>)
+    + {abstract} Task Consume(ConsumeContext<StatisticsRequest>)
+    # {abstract} Task PublishStatisticsResponse(StatisticsRequest, object)
+    # {abstract} Task PublishAlertEvent(string, string, Dictionary<string, object>)
+  }
+}
+
+package "Domain" {
+  abstract class AbstractFlowEntity {
+    + string FlowId
+    + string Description
+    + string ImporterServiceId
+    + string ImporterServiceVersion
+    + List<ProcessingChainReference> ProcessingChains
+    + List<ExporterReference> Exporters
+    + Dictionary<string, ConnectionDefinition> Connections
+    + override string GetEntityId()
+    + override string GetEntityType()
+    + {abstract} override ValidationResult Validate()
+  }
+  
+  abstract class AbstractProcessingChainEntity {
+    + string ChainId
+    + string Description
+    + List<ProcessorReference> Processors
+    + Dictionary<string, BranchDefinition> Branches
+    + override string GetEntityId()
+    + override string GetEntityType()
+    + {abstract} override ValidationResult Validate()
+  }
+  
+  abstract class AbstractSourceEntity {
+    + string SourceId
+    + string Protocol
+    + string Address
+    + Dictionary<string, string> ConnectionParameters
+    + override string GetEntityId()
+    + override string GetEntityType()
+    + {abstract} override ValidationResult Validate()
+  }
+  
+  abstract class AbstractDestinationEntity {
+    + string DestinationId
+    + string Protocol
+    + string Address
+    + Dictionary<string, string> ConnectionParameters
+    + override string GetEntityId()
+    + override string GetEntityType()
+    + {abstract} override ValidationResult Validate()
+  }
+  
+  abstract class AbstractMergeStrategy {
+    + string StrategyName
+    + string Description
+    + {abstract} DataPackage MergeData(Dictionary<string, DataPackage>)
+    + {abstract} ValidationResult ValidateInputs(Dictionary<string, SchemaDefinition>)
+    + {abstract} SchemaDefinition GetOutputSchema(Dictionary<string, SchemaDefinition>)
+  }
+}
+
+' Inheritance relationships
+AbstractEntity <|-- AbstractFlowEntity
+AbstractEntity <|-- AbstractProcessingChainEntity
+AbstractEntity <|-- AbstractSourceEntity
+AbstractEntity <|-- AbstractDestinationEntity
+AbstractEntity <|-- AbstractSourceAssignmentEntity
+AbstractEntity <|-- AbstractDestinationAssignmentEntity
+AbstractEntity <|-- AbstractScheduledFlowEntity
+AbstractEntity <|-- AbstractTaskSchedulerEntity
+
+AbstractServiceBase <|-- AbstractImporterService
+AbstractServiceBase <|-- AbstractProcessorService
+AbstractServiceBase <|-- AbstractExporterService
+AbstractServiceBase <|-- AbstractManagerService
+AbstractServiceBase <|-- AbstractOrchestratorService
+AbstractServiceBase <|-- AbstractMemoryManagerService
+AbstractServiceBase <|-- AbstractBranchControllerService
+AbstractServiceBase <|-- AbstractTaskSchedulerService
+AbstractServiceBase <|-- AbstractStatisticsService
+
+' Interfaces
+interface "IConsumer<ImportCommand>" as IConsumerImport
+interface "IConsumer<ProcessCommand>" as IConsumerProcess
+interface "IConsumer<ExportCommand>" as IConsumerExport
+interface "IConsumer<ServiceRegistrationCommand<TService>>" as IConsumerServiceReg
+interface "IConsumer<FlowExecutionCommand>" as IConsumerFlowExec
+interface "IConsumer<FlowControlCommand>" as IConsumerFlowControl
+interface "IConsumer<MemoryOperationCommand>" as IConsumerMemoryOp
+interface "IConsumer<BranchControlCommand>" as IConsumerBranchControl
+interface "IConsumer<ScheduleCommand>" as IConsumerSchedule
+interface "IConsumer<ScheduleModificationCommand>" as IConsumerScheduleMod
+interface "IConsumer<TelemetryEvent>" as IConsumerTelemetry
+interface "IConsumer<StatisticsRequest>" as IConsumerStatsReq
+
+' Interface implementations
+AbstractImporterService ..|> IConsumerImport
+AbstractProcessorService ..|> IConsumerProcess
+AbstractExporterService ..|> IConsumerExport
+AbstractManagerService ..|> IConsumerServiceReg
+AbstractOrchestratorService ..|> IConsumerFlowExec
+AbstractOrchestratorService ..|> IConsumerFlowControl
+AbstractMemoryManagerService ..|> IConsumerMemoryOp
+AbstractBranchControllerService ..|> IConsumerBranchControl
+AbstractTaskSchedulerService ..|> IConsumerSchedule
+AbstractTaskSchedulerService ..|> IConsumerScheduleMod
+AbstractStatisticsService ..|> IConsumerTelemetry
+AbstractStatisticsService ..|> IConsumerStatsReq
+
+' Common components
+package "Infrastructure" {
+  class "FlowOrchestrator.Messaging.MassTransit" as MassTransitIntegration {
+    + IPublishEndpoint CreatePublishEndpoint()
+    + IBusControl CreateBus(Action<IBusFactoryConfigurator> configure)
+    + void ConfigureConsumers(IBusFactoryConfigurator config)
+    + void ConfigureEndpoints(IBusFactoryConfigurator config)
+    + void ConfigureRetryPolicy(IBusFactoryConfigurator config)
+    + void ConfigureCircuitBreaker(IBusFactoryConfigurator config)
+  }
+  
+  class "FlowOrchestrator.Telemetry.OpenTelemetry" as OpenTelemetryIntegration {
+    + ILogger CreateLogger(string categoryName)
+    + Meter CreateMeter(string meterName)
+    + TracerProvider CreateTracerProvider(string sourceName)
+    + void ConfigureLogging(ILoggingBuilder builder)
+    + void ConfigureMetrics(MeterProviderBuilder builder)
+    + void ConfigureTracing(TracerProviderBuilder builder)
+  }
+}
+
+' Relationships with common components
+AbstractServiceBase ..> MassTransitIntegration : uses
+AbstractServiceBase ..> OpenTelemetryIntegration : uses
+
+@enduml
