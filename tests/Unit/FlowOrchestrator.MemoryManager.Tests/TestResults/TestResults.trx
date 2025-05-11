@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="ac3e98ee-fc12-47f4-b6fc-5be919844313" name="Administrator@DESKTOP-V1Q1BFU 2025-05-10 13:16:52" runUser="DESKTOP-V1Q1BFU\Administrator" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2025-05-10T13:16:52.4375734+03:00" queuing="2025-05-10T13:16:52.4375738+03:00" start="2025-05-10T13:16:51.6768334+03:00" finish="2025-05-10T13:16:52.4426369+03:00" />
+  <TestSettings name="default" id="029193fc-48ec-4d3b-9740-bc60548326f7">
+    <Deployment runDeploymentRoot="Administrator_DESKTOP-V1Q1BFU_2025-05-10_13_16_52" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="f47ba701-121c-4df4-b08e-778e419bc2e4" testId="f82dd136-5846-07ac-a3c5-af9cb779c95b" testName="FlowOrchestrator.MemoryManager.Tests.UnitTest1.Test1" computerName="DESKTOP-V1Q1BFU" duration="00:00:00.0021470" startTime="2025-05-10T13:16:52.3085781+03:00" endTime="2025-05-10T13:16:52.3085963+03:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f47ba701-121c-4df4-b08e-778e419bc2e4" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FlowOrchestrator.MemoryManager.Tests.UnitTest1.Test1" storage="c:\users\administrator\documents\cline\flowarchitecturesystem\design13\tests\unit\floworchestrator.memorymanager.tests\bin\debug\net9.0\floworchestrator.memorymanager.tests.dll" id="f82dd136-5846-07ac-a3c5-af9cb779c95b">
+      <Execution id="f47ba701-121c-4df4-b08e-778e419bc2e4" />
+      <TestMethod codeBase="C:\Users\Administrator\Documents\Cline\FlowArchitectureSystem\Design13\tests\Unit\FlowOrchestrator.MemoryManager.Tests\bin\Debug\net9.0\FlowOrchestrator.MemoryManager.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner2/netcoreapp" className="FlowOrchestrator.MemoryManager.Tests.UnitTest1" name="Test1" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="f82dd136-5846-07ac-a3c5-af9cb779c95b" executionId="f47ba701-121c-4df4-b08e-778e419bc2e4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v2.8.2+699d445a1a (64-bit .NET 9.0.3)&#xD;
+[xUnit.net 00:00:00.07]   Discovering: FlowOrchestrator.MemoryManager.Tests&#xD;
+[xUnit.net 00:00:00.10]   Discovered:  FlowOrchestrator.MemoryManager.Tests&#xD;
+[xUnit.net 00:00:00.10]   Starting:    FlowOrchestrator.MemoryManager.Tests&#xD;
+[xUnit.net 00:00:00.15]   Finished:    FlowOrchestrator.MemoryManager.Tests&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

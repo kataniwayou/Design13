@@ -1,0 +1,6 @@
+@FlowOrchestrator.AnalyticsEngine_HostAddress = http://localhost:5024
+
+GET {{FlowOrchestrator.AnalyticsEngine_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

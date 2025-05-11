@@ -1,0 +1,4 @@
+MSBUILD : error MSB1009: Project file does not exist.
+Switch: tests\Unit\FlowOrchestrator.Data.MongoDB.Tests\FlowOrchestrator.Data.MongoDB.Tests.csproj
+
+Workload updates are available. Run `dotnet workload list` for more information.

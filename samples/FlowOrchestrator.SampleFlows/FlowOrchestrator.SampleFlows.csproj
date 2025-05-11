@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Core\FlowOrchestrator.Abstractions\FlowOrchestrator.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Core\FlowOrchestrator.Common\FlowOrchestrator.Common.csproj" />
+    <ProjectReference Include="..\..\src\Core\FlowOrchestrator.Domain\FlowOrchestrator.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Execution\FlowOrchestrator.Orchestrator\FlowOrchestrator.Orchestrator.csproj" />
+    <ProjectReference Include="..\..\src\Management\FlowOrchestrator.FlowManager\FlowOrchestrator.FlowManager.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

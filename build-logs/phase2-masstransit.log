@@ -1,0 +1,14 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  FlowOrchestrator.Common -> C:\Users\Administrator\Documents\Cline\FlowArchitectureSystem\Design13\src\Core\FlowOrchestrator.Common\bin\Debug\net9.0\FlowOrchestrator.Common.dll
+  FlowOrchestrator.Abstractions -> C:\Users\Administrator\Documents\Cline\FlowArchitectureSystem\Design13\src\Core\FlowOrchestrator.Abstractions\bin\Debug\net9.0\FlowOrchestrator.Abstractions.dll
+  FlowOrchestrator.Domain -> C:\Users\Administrator\Documents\Cline\FlowArchitectureSystem\Design13\src\Core\FlowOrchestrator.Domain\bin\Debug\net9.0\FlowOrchestrator.Domain.dll
+  FlowOrchestrator.Messaging.MassTransit -> C:\Users\Administrator\Documents\Cline\FlowArchitectureSystem\Design13\src\Infrastructure\FlowOrchestrator.Messaging.MassTransit\bin\Debug\net9.0\FlowOrchestrator.Messaging.MassTransit.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.35
+
+Workload updates are available. Run `dotnet workload list` for more information.

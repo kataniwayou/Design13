@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\FlowOrchestrator.Abstractions\FlowOrchestrator.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Core\FlowOrchestrator.Common\FlowOrchestrator.Common.csproj" />
+    <ProjectReference Include="..\..\Core\FlowOrchestrator.Domain\FlowOrchestrator.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\FlowOrchestrator.Data.Hazelcast\FlowOrchestrator.Data.Hazelcast.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\FlowOrchestrator.Messaging.MassTransit\FlowOrchestrator.Messaging.MassTransit.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\FlowOrchestrator.Telemetry.OpenTelemetry\FlowOrchestrator.Telemetry.OpenTelemetry.csproj" />
+    <ProjectReference Include="..\FlowOrchestrator.BranchController\FlowOrchestrator.BranchController.csproj" />
+    <ProjectReference Include="..\FlowOrchestrator.MemoryManager\FlowOrchestrator.MemoryManager.csproj" />
+    <ProjectReference Include="..\FlowOrchestrator.Recovery\FlowOrchestrator.Recovery.csproj" />
+  </ItemGroup>
+
+</Project>

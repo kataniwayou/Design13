@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\FlowOrchestrator.Abstractions\FlowOrchestrator.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Core\FlowOrchestrator.Common\FlowOrchestrator.Common.csproj" />
+    <ProjectReference Include="..\..\Core\FlowOrchestrator.Domain\FlowOrchestrator.Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\FlowOrchestrator.Data.Hazelcast\FlowOrchestrator.Data.Hazelcast.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\FlowOrchestrator.Telemetry.OpenTelemetry\FlowOrchestrator.Telemetry.OpenTelemetry.csproj" />
+  </ItemGroup>
+
+</Project>
